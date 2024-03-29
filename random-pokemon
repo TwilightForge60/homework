@@ -1,0 +1,91 @@
+!/bin/bash
+
+# USE TO FORMAT TYPE COLORS
+declare -A color_types=(
+    [fire]="31"
+    [water]="34"
+    [grass]="32"
+)
+
+MainMenu() {
+
+CreatureID=00
+echo " "
+
+# ASK USER TO INPUT THEIR LOCATION.
+echo -e "Are you in \e[33m[Kanto]\e[00m or \e[33m[Johto}\e[0m?"
+read -p "SELECTION: " Location
+echo -e "You have selected \e[33m$Location\e[0m."
+typeset -l Location="${Location}"
+
+if [ $Location = "kanto" ]; then
+        (( CreatureID += 100 ))
+
+elif [ $Location = "johto" ]; then
+        (( CreatureID += 200 ))
+
+else
+        echo "You dumbass! You had two options!"
+        MainMenu
+fi
+
+echo " "
+sleep 1
+
+# ASK USER TO INPUT THEIR TYPE.
+echo -e "Do you prefer \e[31m[Fire]\e[0m, \e[34m[Water]\e[0m, or \e[32m[Grass]\e[0m types?"
+read -p "SELECTION: " Type
+typeset -l Type_lower="${Type}"
+color_type="${color_types[$Type_lower]}"
+echo -e "You have selected \e[${color_type}m$Type\e[0m."
+
+
+if [ $Type_lower = "fire" ]; then
+        (( CreatureID += 10 ))
+
+elif [ $Type_lower = "water" ]; then
+        (( CreatureID += 20 ))
+
+elif [ $Type_lower = "grass" ]; then
+        (( CreatureID += 30 ))
+
+else
+        echo "You dumbass! You had three options. Let's start over!"
+        MainMenu
+fi
+
+# RANDOMIZE THE POKEMON CHOOSEN FROM A POOL
+Randomizer=$(( (RANDOM % 3) + 1 ))
+(( CreatureID += $Randomizer ))
+
+declare -A creatures=(
+        #KANTO
+        [111]="CHARMANDER"
+        [112]="VULPIX"
+        [113]="GROWLITHE"
+        [121]="SQUIRTLE"
+        [122]="PSYDUCK"
+        [123]="POLIWAG"
+        [131]="BULBASAUR"
+        [132]="ODDISH"
+        [133]="BELLSPROUT"
+        #JOHTO
+        [211]="CYNDAQUIL"
+        [212]="BAGBY"
+        [213]="SLUGMA"
+        [221]="TOTODILE"
+        [222]="WOOPER"
+        [223]="POLITOED"
+        [231]="CHIKORITA"
+        [232]="HOPPIP"
+        [233]="BELLOSSOM"
+)
+
+echo " "
+sleep 1
+echo -e "I choose you, \e[33m${creatures[$CreatureID]}\e[0m!"
+echo " "
+
+}
+
+MainMenu
